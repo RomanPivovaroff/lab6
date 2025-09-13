@@ -74,7 +74,7 @@ test {
 }
 
 shadowJar {
-    archiveBaseName = 'lab6_client'
+    archiveBaseName = 'lab6_server'
     archiveVersion = '1'
     manifest {
         attributes 'Main-Class': 'server.Main'

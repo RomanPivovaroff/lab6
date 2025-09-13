@@ -2,7 +2,6 @@ package server.utility;
 
 import common.command.AbstractCommand;
 import common.command.ExecutionResponse;
-import common.command.RemoteCommand;
 import common.utility.Console;
 import common.utility.ProgramStatus;
 import common.utility.Response;
@@ -85,7 +84,10 @@ public class ServerCommandProcessor {
                             + udpManager.getReceivingManager().lastReceivedAddress);
 
             ExecutionResponse result =
-                    commandManager.getCommands().get(command.getName()).execute(command);
+                    commandManager
+                            .getCommands()
+                            .get(command.getName().split(" ")[0])
+                            .execute(command);
 
             // Отправляем результат обратно клиенту
             if (result != null) {
@@ -100,12 +102,6 @@ public class ServerCommandProcessor {
                     e);
             sendErrorResponse("Ошибка выполнения команды: " + e.getMessage());
         }
-    }
-
-    /** Выполнение команды */
-    private Object executeCommand(RemoteCommand command) {
-        logger.info("Выполнение команды: " + command.getClass().getSimpleName());
-        return new Response("Команда выполнена успешно", null, 0);
     }
 
     /** Обработка статусов подключения */

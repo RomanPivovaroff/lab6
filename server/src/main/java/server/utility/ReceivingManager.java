@@ -1,6 +1,6 @@
 package server.utility;
 
-import common.command.RemoteCommand;
+import common.command.*;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
@@ -179,7 +179,19 @@ public class ReceivingManager {
 
         // Для RemoteCommand
         try {
-            JAXBContext context = JAXBContext.newInstance(RemoteCommand.class);
+            JAXBContext context =
+                    JAXBContext.newInstance(
+                            Show.class,
+                            Info.class,
+                            Add.class,
+                            AddIfMax.class,
+                            Clear.class,
+                            FilterByOrganization.class,
+                            PrintAscending.class,
+                            PrintUniqueStatus.class,
+                            RemoveById.class,
+                            RemoveGreater.class,
+                            Update.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             return unmarshaller.unmarshal(inputStream);
         } catch (Exception e) {

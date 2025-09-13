@@ -18,14 +18,26 @@ public class ExecutionResponse {
         this(true, s);
     }
 
+    public ExecutionResponse() {
+        this(false, null);
+    }
+
     @XmlElement
     public boolean getIsSucceeded() {
         return isSucceeded;
     }
 
+    public void setIsSucceeded(boolean isSucceeded) {
+        this.isSucceeded = isSucceeded;
+    }
+
     @XmlElement
     public String getMassage() {
         return massage;
+    }
+
+    public void setMassage(String massage) {
+        this.massage = massage;
     }
 
     public String toString() {
