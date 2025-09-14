@@ -15,15 +15,16 @@ import java.nio.channels.DatagramChannel;
 
 public class SendingManager {
     private final Console console;
+    private final InetAddress serverAddress;
 
-    public SendingManager(Console console) {
+    public SendingManager(Console console, InetAddress serverAddress) {
+        this.serverAddress = serverAddress;
         this.console = console;
     }
 
     public void send(
             RemoteCommand object, int serverPort, int clientPort, DatagramChannel channel) {
         try {
-            InetAddress serverAddress = InetAddress.getByName("localhost"); // 192.168.10.80
             // Сериализация
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             JAXBContext context = JAXBContext.newInstance(object.getClass());

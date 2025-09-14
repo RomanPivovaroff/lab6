@@ -9,6 +9,9 @@ import client.utility.UDPManager;
 import common.command.*;
 import common.utility.StandardAppConsole;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 public class Main {
     private static int port;
     private static String server_adress;
@@ -16,18 +19,32 @@ public class Main {
     public static void main(String[] args) {
         int clientPort = 10000 + (int) (Math.random() * 40001);
         var console = new StandardAppConsole();
-        int port;
+        int port = -1;
         do {
             console.println("Введите порт(число от 0 до 65535): ");
             String line = console.readln();
-            if (!line.isBlank()) port = Integer.parseInt(line);
-            else port = -1;
+            try {
+                if (!line.isBlank()) port = Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                port = -1;
+                console.printError("некоректный порт");
+            }
         } while (port > 65535 || port < 0);
+        InetAddress serverAddress = null;
+        do {
+            console.println("Введите адрес сервера(например: 192.168.10.80");
+            String line = console.readln();
+            try {
+                if (!line.isBlank()) serverAddress = InetAddress.getByName(line);
+            } catch (UnknownHostException e) {
+                console.printError("некоректный адресс");
+            }
+        } while (serverAddress == null);
         var udpManager =
                 new UDPManager(
                         console,
                         new ReceivingManager(console),
-                        new SendingManager(console),
+                        new SendingManager(console, serverAddress),
                         port,
                         clientPort);
 

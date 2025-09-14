@@ -14,15 +14,23 @@ public class Main {
             System.exit(1);
         }
         UDPManager udpManager = null;
-        int i = 1200;
-        while (i <= 65000)
+        int port = -1;
+        do {
+            console.println("Введите порт(число от 0 до 65535): ");
+            String line = console.readln();
             try {
-                udpManager = new UDPManager(i, new SendingManager(), new ReceivingManager());
-                console.print("Сервер открыт на порту: " + i);
-                break;
-            } catch (IOException e) {
-                i++;
+                if (!line.isBlank()) port = Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                console.printError("некоректный порт");
             }
+        } while (port > 65535 || port < 0);
+        console.print("Сервер открыт на порту: " + port);
+        try {
+            udpManager = new UDPManager(port, new SendingManager(), new ReceivingManager());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        console.print("Сервер открыт на порту: " + port);
         XMLReader reader = new XMLReader(new File(args[0]), console);
         XMLWriter writer = new XMLWriter(new File(args[0]), console);
         CollectionManager collectionManager = new CollectionManager(reader, writer);
